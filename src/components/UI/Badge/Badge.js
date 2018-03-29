@@ -15,7 +15,7 @@ export default Badge;
 Badge.propTypes = {
   backgroundColor: PropTypes.string,
   name: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 Badge.defaultProps = {

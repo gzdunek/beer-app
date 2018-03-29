@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 
 import Modal from '../components/UI/Modal/Modal';
 
 import BeerDetails, { BeerDetailsPropTypes } from '../components/Beer/Details/BeerDetails';
-import { fetchBeerDetailsIfNeeded, closeBeerDetails } from '../actions/beer';
+import { fetchBeerDetailsIfNeeded, closeBeerDetails, openBeerDetails } from '../actions/beer';
 
 const mapStateToProps = (state) => {
   const beerDetailsVisibility = state.beerDetails.visible;
@@ -18,9 +19,14 @@ const mapStateToProps = (state) => {
 
 class BeerDetailsContainer extends Component {
   componentDidMount() {
-    const { dispatch, id } = this.props;
+    const { dispatch, id, match } = this.props;
+
     if (id) {
       dispatch(fetchBeerDetailsIfNeeded(id));
+    } else if (match.path === '/details/:id') {
+      const idFromUrl = +match.params.id;
+      dispatch(openBeerDetails(idFromUrl));
+      dispatch(fetchBeerDetailsIfNeeded(idFromUrl));
     }
   }
 
@@ -32,8 +38,9 @@ class BeerDetailsContainer extends Component {
   }
 
   handleRequestClose = () => {
-    const { dispatch } = this.props;
+    const { dispatch, history } = this.props;
     dispatch(closeBeerDetails());
+    history.push('/');
   };
 
   render() {
@@ -55,7 +62,7 @@ class BeerDetailsContainer extends Component {
   }
 }
 
-export default connect(mapStateToProps)(BeerDetailsContainer);
+export default withRouter(connect(mapStateToProps)(BeerDetailsContainer));
 
 BeerDetailsContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
@@ -66,6 +73,10 @@ BeerDetailsContainer.propTypes = {
   }).isRequired,
   // eslint-disable-next-line react/no-typos
   beerDetails: BeerDetailsPropTypes,
+  // eslint-disable-next-line react/forbid-prop-types
+  history: PropTypes.object.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  match: PropTypes.object.isRequired,
 };
 
 BeerDetailsContainer.defaultProps = {

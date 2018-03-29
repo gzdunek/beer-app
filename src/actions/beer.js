@@ -2,8 +2,8 @@ export const REQUEST_BEERS = 'REQUEST_BEERS';
 export const RECEIVE_BEERS = 'RECEIVE_BEERS';
 export const REQUEST_BEER_DETAILS = 'REQUEST_BEER_DETAILS';
 export const RECEIVE_BEER_DETAILS = 'RECEIVE_BEER_DETAILS';
-export const CHANGE_BEER_DETAILS_VISIBILITY = 'CHANGE_BEER_DETAILS_VISIBILITY';
-
+export const OPEN_BEER_DETAILS = 'OPEN_BEER_DETAILS';
+export const CLOSE_BEER_DETAILS = 'CLOSE_BEER_DETAILS';
 
 export const requestBeers = page => ({
   type: REQUEST_BEERS,
@@ -16,10 +16,13 @@ export const receiveBeers = (page, results) => ({
   beers: results,
 });
 
-export const changeBeerDetailsVisibility = (id, isVisible) => ({
-  type: CHANGE_BEER_DETAILS_VISIBILITY,
+export const openBeerDetails = id => ({
+  type: OPEN_BEER_DETAILS,
   id,
-  isVisible,
+});
+
+export const closeBeerDetails = () => ({
+  type: CLOSE_BEER_DETAILS,
 });
 
 export const requestBeerDetails = id => ({

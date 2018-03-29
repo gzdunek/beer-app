@@ -2,19 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import BeerList from '../components/Beer/List/BeerList';
-import { changeBeerDetailsVisibility, fetchBeers } from '../actions/beer';
+import { openBeerDetails, fetchBeers } from '../actions/beer';
 import { BeerItemPropTypes } from '../components/Beer/Item/BeerItem';
 
-const mapStateToProps = (state) => {
-  const beerDetailsVisibility = state.beerDetails.visible;
-  return {
-    isFetching: state.beers.isFetching,
-    beers: state.beers.items,
-    page: state.beers.page,
-    beerDetailsVisibility,
-    beerDetails: state.beerDetails.byId[beerDetailsVisibility.id] || {},
-  };
-};
+const mapStateToProps = state => ({
+  isFetching: state.beers.isFetching,
+  beers: state.beers.items,
+  page: state.beers.page,
+});
 
 class BeersListContainer extends Component {
   componentDidMount() {
@@ -29,7 +24,7 @@ class BeersListContainer extends Component {
 
   handleBeerClick = (id) => {
     const { dispatch } = this.props;
-    dispatch(changeBeerDetailsVisibility(id));
+    dispatch(openBeerDetails(id));
   };
 
   render() {

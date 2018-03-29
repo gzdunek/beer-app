@@ -13,7 +13,7 @@ const BeerList = ({ beers, onBeerClick, loadMoreBeers }) => (
     dataLength={beers.length}
     loader={<div className="loader" key={0}>Loading ...</div>}
   >
-    <div className="beers-list">
+    <div className="beer-list">
       {beers && beers.map(beer => (
         <BeerItem
           key={beer.id}

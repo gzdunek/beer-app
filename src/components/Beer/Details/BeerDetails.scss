@@ -1,0 +1,34 @@
+.beer-details {
+    display: grid;
+    grid-template-areas: "image info";
+    grid-template-columns: 50%;
+
+    &__image {
+        margin: auto;
+        transform: rotate(15deg);        
+        grid-area: image;
+        height: 600px;
+    }
+
+    &__info {
+        grid-area: info;
+    }
+
+    &__name {
+        font-size: 3em;
+        font-weight: 700;
+    }
+
+    &__tagline {
+        font-weight: 300;
+    }
+
+    &__description {
+        font-weight: 300;
+    }
+
+    &__brewers-tips {
+        font-weight: 300;
+        font-style: italic;
+    }
+}

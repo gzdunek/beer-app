@@ -1,0 +1,18 @@
+.badge {
+    display: flex;
+    justify-content: space-between;
+    width: 70px;
+    padding: 7px 15px;
+    border-radius: 30px;
+    margin-right: 15px;
+
+    &__name {
+        color: white;
+    }
+
+    &__value {
+        font-weight: 700;        
+        text-align: right;
+        color: white;
+    }
+}

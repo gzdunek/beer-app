@@ -6,34 +6,28 @@ import { withRouter } from 'react-router';
 import Modal from '../components/UI/Modal/Modal';
 
 import BeerDetails, { BeerDetailsPropTypes } from '../components/Beer/Details/BeerDetails';
-import { fetchBeerDetailsIfNeeded, closeBeerDetails, openBeerDetails } from '../actions/beer';
+import { fetchBeerByIdIfNeeded, closeBeerDetails, openBeerDetails } from '../actions/beer';
+import { getSelectedId, getBeerById, getIsFetchingBeerById } from '../reducers';
 
 const mapStateToProps = (state) => {
-  const beerDetailsVisibility = state.beerDetails.visible;
+  const seletctedId = getSelectedId(state);
   return {
-    beerDetailsVisibility,
-    id: beerDetailsVisibility.id,
-    beerDetails: state.beerDetails.byId[beerDetailsVisibility.id],
+    seletctedId,
+    isFetching: getIsFetchingBeerById(state),
+    beerDetails: getBeerById(state, seletctedId),
   };
 };
 
 class BeerDetailsContainer extends Component {
   componentDidMount() {
-    const { dispatch, id, match } = this.props;
+    const { dispatch, seletctedId, match } = this.props;
 
-    if (id) {
-      dispatch(fetchBeerDetailsIfNeeded(id));
+    if (seletctedId) {
+      dispatch(fetchBeerByIdIfNeeded(seletctedId));
     } else if (match.path === '/details/:id') {
       const idFromUrl = +match.params.id;
       dispatch(openBeerDetails(idFromUrl));
-      dispatch(fetchBeerDetailsIfNeeded(idFromUrl));
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { dispatch, id } = this.props;
-    if (nextProps.id !== null && nextProps.id !== id) {
-      dispatch(fetchBeerDetailsIfNeeded(nextProps.id));
+      dispatch(fetchBeerByIdIfNeeded(idFromUrl));
     }
   }
 
@@ -44,17 +38,17 @@ class BeerDetailsContainer extends Component {
   };
 
   render() {
-    const { beerDetailsVisibility, beerDetails } = this.props;
+    const { seletctedId, isFetching, beerDetails } = this.props;
 
     return (
       <div>
         <Modal
-          isOpen={beerDetailsVisibility.isVisible}
+          isOpen={!!seletctedId}
           onRequestClose={this.handleRequestClose}
         >
           {beerDetails && <BeerDetails
-            isFetching={beerDetails.isFetching}
-            beer={beerDetails.details}
+            isFetching={isFetching}
+            beer={beerDetails}
           />}
         </Modal>
       </div>
@@ -66,11 +60,8 @@ export default withRouter(connect(mapStateToProps)(BeerDetailsContainer));
 
 BeerDetailsContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  id: PropTypes.number,
-  beerDetailsVisibility: PropTypes.shape({
-    id: PropTypes.number,
-    isVisible: PropTypes.bool.isRequired,
-  }).isRequired,
+  seletctedId: PropTypes.number,
+  isFetching: PropTypes.bool,
   // eslint-disable-next-line react/no-typos
   beerDetails: BeerDetailsPropTypes,
   // eslint-disable-next-line react/forbid-prop-types
@@ -80,6 +71,7 @@ BeerDetailsContainer.propTypes = {
 };
 
 BeerDetailsContainer.defaultProps = {
-  id: null,
+  seletctedId: null,
+  isFetching: false,
   beerDetails: {},
 };

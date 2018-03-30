@@ -1,20 +1,17 @@
-export const REQUEST_BEERS = 'REQUEST_BEERS';
-export const RECEIVE_BEERS = 'RECEIVE_BEERS';
-export const REQUEST_BEER_DETAILS = 'REQUEST_BEER_DETAILS';
-export const RECEIVE_BEER_DETAILS = 'RECEIVE_BEER_DETAILS';
+import { normalize } from 'normalizr';
+import * as schema from './schema';
+import { getBeerById } from '../reducers';
+
+export const FETCH_BEERS_REQUEST = 'FETCH_BEERS_REQUEST';
+export const FETCH_BEERS_SUCCESS = 'FETCH_BEERS_SUCCESS';
+export const FETCH_BEERS_FAILURE = 'FETCH_BEERS_FAILURE';
+export const FETCH_BEER_BY_ID_REQUEST = 'FETCH_BEER_BY_ID_REQUEST';
+export const FETCH_BEER_BY_ID_SUCCESS = 'FETCH_BEER_BY_ID_SUCCESS';
+export const FETCH_BEER_BY_ID_FAILURE = 'FETCH_BEER_BY_ID_FAILURE';
 export const OPEN_BEER_DETAILS = 'OPEN_BEER_DETAILS';
 export const CLOSE_BEER_DETAILS = 'CLOSE_BEER_DETAILS';
-
-export const requestBeers = page => ({
-  type: REQUEST_BEERS,
-  page,
-});
-
-export const receiveBeers = (page, results) => ({
-  type: RECEIVE_BEERS,
-  page,
-  beers: results,
-});
+export const REQUEST_SIMILAR_BEERS = 'REQUEST_SIMILAR_BEERS';
+export const RECIEVE_SIMILAR_BEERS = 'RECIEVE_SIMILAR_BEERS';
 
 export const openBeerDetails = id => ({
   type: OPEN_BEER_DETAILS,
@@ -25,43 +22,74 @@ export const closeBeerDetails = () => ({
   type: CLOSE_BEER_DETAILS,
 });
 
-export const requestBeerDetails = id => ({
-  type: REQUEST_BEER_DETAILS,
-  id,
+export const requestSimilarBeers = beerId => ({
+  type: REQUEST_SIMILAR_BEERS,
+  beerId,
 });
 
-export const receiveBeerDetails = (id, details) => ({
-  type: RECEIVE_BEER_DETAILS,
-  id,
-  details,
+export const receiveSimilarBeers = (beerId, similarBeers) => ({
+  type: RECIEVE_SIMILAR_BEERS,
+  beerId,
+  similarBeers,
 });
 
-const shouldFetchBeerDetails = (state, beerId) => {
-  const beerDetails = state.beerDetails.byId[beerId];
-  if (!beerDetails) {
+const shouldFetchBeerById = (state, beerId) => {
+  const beerById = getBeerById(state, beerId);
+  if (!beerById) {
     return true;
   }
 
   return false;
 };
 
-const fetchBeerDetails = id => (dispatch) => {
-  dispatch(requestBeerDetails(id));
+const fetchBeerById = id => (dispatch) => {
+  dispatch({
+    type: FETCH_BEER_BY_ID_REQUEST,
+    id,
+  });
+
   fetch(`https://api.punkapi.com/v2/beers/${id}`)
     .then(response => response.json())
     .then(response => response[0])
-    .then(json => dispatch(receiveBeerDetails(id, json)));
+    .then((json) => {
+      const normalized = normalize(json, schema.beer);
+      console.log(normalized);
+      dispatch({
+        type: FETCH_BEER_BY_ID_SUCCESS,
+        response: normalized,
+      });
+    });
 };
 
-export const fetchBeerDetailsIfNeeded = id => (dispatch, getState) => {
-  if (shouldFetchBeerDetails(getState(), id)) {
-    dispatch(fetchBeerDetails(id));
+export const fetchBeerByIdIfNeeded = id => (dispatch, getState) => {
+  if (shouldFetchBeerById(getState(), id)) {
+    dispatch(fetchBeerById(id));
   }
 };
 
-export const fetchBeers = (page = 1) => (dispatch) => {
-  dispatch(requestBeers(page));
-  return fetch(`https://api.punkapi.com/v2/beers?page=${page}`)
+export const fetchBeers = (currentPage = 1) => (dispatch) => {
+  dispatch({
+    type: FETCH_BEERS_REQUEST,
+    currentPage,
+  });
+
+  return fetch(`https://api.punkapi.com/v2/beers?&per_page=20&page=${currentPage}`)
     .then(response => response.json())
-    .then(json => dispatch(receiveBeers(page, json)));
+    .then((json) => {
+      const normalized = normalize(json, schema.arrayOfBeers);
+      dispatch({
+        type: FETCH_BEERS_SUCCESS,
+        currentPage,
+        response: normalized,
+      });
+    });
 };
+
+// export const fetchSimilarBeers = (measurement, value) => dispatch => {
+//   dispatch(requestSimilarBeers(paramter));
+//   return fetch(`https://api.punkapi.com/v2/beers?
+//     ${measurement}_gt=${gtValue}&
+//     ${measurement}_lt=${ltValue}`)
+//     .then(response => response.json())
+//     .then(json => dispatch(receiveBeers(page, json)));
+// }

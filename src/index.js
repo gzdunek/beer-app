@@ -8,7 +8,7 @@ import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import App from './components/App';
 import registerServiceWorker from './registerServiceWorker';
-import reducers from './reducers/beers';
+import reducers from './reducers/index';
 
 // eslint-disable-next-line no-underscore-dangle
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

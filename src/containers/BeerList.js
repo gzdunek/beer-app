@@ -5,11 +5,12 @@ import { withRouter } from 'react-router';
 import BeerList from '../components/Beer/List/BeerList';
 import { openBeerDetails, fetchBeers } from '../actions/beer';
 import { BeerItemPropTypes } from '../components/Beer/Item/BeerItem';
+import { getBeers, getCurrentPage, getIsFetchingBeers } from '../reducers';
 
 const mapStateToProps = state => ({
-  isFetching: state.beers.isFetching,
-  beers: state.beers.items,
-  page: state.beers.page,
+  isFetching: getIsFetchingBeers(state),
+  beers: getBeers(state),
+  currentPage: getCurrentPage(state),
 });
 
 class BeersListContainer extends Component {
@@ -19,8 +20,8 @@ class BeersListContainer extends Component {
   }
 
   handleLoadMoreBeers = () => {
-    const { dispatch, page } = this.props;
-    dispatch(fetchBeers(page + 1));
+    const { dispatch, currentPage } = this.props;
+    dispatch(fetchBeers(currentPage + 1));
   };
 
   handleBeerClick = (id) => {
@@ -49,7 +50,7 @@ export default withRouter(connect(mapStateToProps)(BeersListContainer));
 
 BeersListContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  page: PropTypes.number.isRequired,
+  currentPage: PropTypes.number.isRequired,
   beers: PropTypes.arrayOf(BeerItemPropTypes).isRequired,
   isFetching: PropTypes.bool.isRequired,
   // eslint-disable-next-line react/forbid-prop-types

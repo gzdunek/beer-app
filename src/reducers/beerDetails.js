@@ -1,47 +1,34 @@
 import { combineReducers } from 'redux';
-import { OPEN_BEER_DETAILS, RECEIVE_BEER_DETAILS, REQUEST_BEER_DETAILS, CLOSE_BEER_DETAILS } from '../actions/beer';
+import { OPEN_BEER_DETAILS, CLOSE_BEER_DETAILS, FETCH_BEER_BY_ID_REQUEST,
+  FETCH_BEER_BY_ID_SUCCESS, FETCH_BEER_BY_ID_FAILURE } from '../actions/beer';
 
-export const beerDetailsVisible = (state = { id: null, isVisible: false }, action) => {
+export const selectedId = (state = null, action) => {
   switch (action.type) {
     case OPEN_BEER_DETAILS:
-      return ({
-        id: action.id,
-        isVisible: true,
-      });
+      return action.id;
     case CLOSE_BEER_DETAILS:
-      return ({
-        id: null,
-        isVisible: false,
-      });
+      return null;
     default:
       return state;
   }
 };
 
-export const beerDetailsById = (state = {}, action) => {
+export const isFetching = (state = false, action) => {
   switch (action.type) {
-    case REQUEST_BEER_DETAILS:
-      return ({
-        ...state,
-        [action.id]: {
-          isFetching: true,
-          details: {},
-        },
-      });
-    case RECEIVE_BEER_DETAILS:
-      return ({
-        ...state,
-        [action.id]: {
-          isFetching: false,
-          details: action.details,
-        },
-      });
+    case FETCH_BEER_BY_ID_REQUEST:
+      return true;
+    case FETCH_BEER_BY_ID_SUCCESS:
+    case FETCH_BEER_BY_ID_FAILURE:
+      return false;
     default:
       return state;
   }
 };
 
 export default combineReducers({
-  visible: beerDetailsVisible,
-  byId: beerDetailsById,
+  selectedId,
+  isFetching,
 });
+
+export const getSelectedId = state => state.selectedId;
+export const getIsFetching = state => state.isFetching;

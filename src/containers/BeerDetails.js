@@ -6,8 +6,9 @@ import { withRouter } from 'react-router';
 import Modal from '../components/UI/Modal/Modal';
 
 import BeerDetails, { BeerDetailsPropTypes } from '../components/Beer/Details/BeerDetails';
-import { fetchBeerByIdIfNeeded, closeBeerDetails, openBeerDetails } from '../actions/beer';
-import { getSelectedId, getBeerById, getIsFetchingBeerById } from '../reducers';
+import { closeBeerDetails, openBeerDetails, fetchBeerAndSimilarBeers } from '../actions/beer';
+import { getSelectedId, getBeerById, getIsFetchingBeerById, getSimilarBeers } from '../reducers';
+import { BeerItemPropTypes } from '../components/Beer/Item/BeerItem';
 
 const mapStateToProps = (state) => {
   const seletctedId = getSelectedId(state);
@@ -15,6 +16,7 @@ const mapStateToProps = (state) => {
     seletctedId,
     isFetching: getIsFetchingBeerById(state),
     beerDetails: getBeerById(state, seletctedId),
+    similarBeers: getSimilarBeers(state, seletctedId),
   };
 };
 
@@ -23,11 +25,11 @@ class BeerDetailsContainer extends Component {
     const { dispatch, seletctedId, match } = this.props;
 
     if (seletctedId) {
-      dispatch(fetchBeerByIdIfNeeded(seletctedId));
+      dispatch(fetchBeerAndSimilarBeers(seletctedId));
     } else if (match.path === '/details/:id') {
       const idFromUrl = +match.params.id;
       dispatch(openBeerDetails(idFromUrl));
-      dispatch(fetchBeerByIdIfNeeded(idFromUrl));
+      dispatch(fetchBeerAndSimilarBeers(idFromUrl));
     }
   }
 
@@ -38,7 +40,12 @@ class BeerDetailsContainer extends Component {
   };
 
   render() {
-    const { seletctedId, isFetching, beerDetails } = this.props;
+    const {
+      seletctedId,
+      isFetching,
+      beerDetails,
+      similarBeers,
+    } = this.props;
 
     return (
       <div>
@@ -46,10 +53,13 @@ class BeerDetailsContainer extends Component {
           isOpen={!!seletctedId}
           onRequestClose={this.handleRequestClose}
         >
-          {beerDetails && <BeerDetails
-            isFetching={isFetching}
-            beer={beerDetails}
-          />}
+          <div>
+            {beerDetails && <BeerDetails
+              isFetching={isFetching}
+              beer={beerDetails}
+            />}
+            {similarBeers && similarBeers.map(beer => <p key={beer.id}>{beer.name}</p>)}
+          </div>
         </Modal>
       </div>
     );
@@ -68,10 +78,12 @@ BeerDetailsContainer.propTypes = {
   history: PropTypes.object.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   match: PropTypes.object.isRequired,
+  similarBeers: PropTypes.arrayOf(BeerItemPropTypes),
 };
 
 BeerDetailsContainer.defaultProps = {
   seletctedId: null,
   isFetching: false,
   beerDetails: {},
+  similarBeers: [],
 };

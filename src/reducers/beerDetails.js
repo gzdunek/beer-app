@@ -1,6 +1,9 @@
 import { combineReducers } from 'redux';
-import { OPEN_BEER_DETAILS, CLOSE_BEER_DETAILS, FETCH_BEER_BY_ID_REQUEST,
-  FETCH_BEER_BY_ID_SUCCESS, FETCH_BEER_BY_ID_FAILURE } from '../actions/beer';
+import {
+  OPEN_BEER_DETAILS, CLOSE_BEER_DETAILS, FETCH_BEER_BY_ID_REQUEST,
+  FETCH_BEER_BY_ID_SUCCESS, FETCH_BEER_BY_ID_FAILURE,
+} from '../actions/beer';
+import similarBeers from './similarBeers';
 
 export const selectedId = (state = null, action) => {
   switch (action.type) {
@@ -28,7 +31,9 @@ export const isFetching = (state = false, action) => {
 export default combineReducers({
   selectedId,
   isFetching,
+  similarBeers,
 });
 
 export const getSelectedId = state => state.selectedId;
 export const getIsFetching = state => state.isFetching;
+export const getSimilarBeersById = (state, id) => state.similarBeers[id] || { ids: [] };

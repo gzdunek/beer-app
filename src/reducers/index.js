@@ -20,3 +20,7 @@ export const getIsFetchingBeers = state => fromBeerList.getIsFetching(state.beer
 export const getCurrentPage = state => fromBeerList.getCurrentPage(state.beerList);
 export const getSelectedId = state => fromBeerDetails.getSelectedId(state.beerDetails);
 export const getIsFetchingBeerById = state => fromBeerDetails.getIsFetching(state.beerDetails);
+export const getSimilarBeers = (state, id) => fromBeerDetails
+  .getSimilarBeersById(state.beerDetails, id)
+  .ids
+  .map(similarBeerId => fromById.getBeer(state.byId, similarBeerId));

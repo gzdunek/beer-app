@@ -7,6 +7,7 @@ import './BeerList.scss';
 
 const BeerList = ({ beers, onBeerClick, loadMoreBeers }) => (
   <InfiniteScroll
+    style={{ overflow: 'visible' }}
     next={loadMoreBeers}
     hasMore={!!beers.length}
     scrollThreshold={0.7}

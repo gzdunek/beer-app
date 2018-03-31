@@ -1,0 +1,17 @@
+.beer-small-item {
+  width: 100px;
+  cursor: pointer;
+  margin-right: 30px;
+
+  &__image {
+    margin: auto;
+    width: auto;
+    height: 100px;
+  }
+
+  &__name {
+    word-wrap: break-word;
+    white-space: normal;
+    margin: 0;
+  }
+}

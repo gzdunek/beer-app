@@ -5,11 +5,16 @@ import BeerItem, { BeerItemPropTypes } from '../Item/BeerItem';
 
 import './BeerList.scss';
 
-const BeerList = ({ beers, onBeerClick, loadMoreBeers }) => (
+const BeerList = ({
+  beers,
+  onBeerClick,
+  loadMoreBeers,
+  isFetching,
+}) => (
   <InfiniteScroll
     style={{ overflow: 'visible' }}
     next={loadMoreBeers}
-    hasMore={!!beers.length}
+    hasMore={!!beers.length} // TODO
     scrollThreshold={0.7}
     dataLength={beers.length}
     loader={<div className="loader" key={0}>Loading ...</div>}
@@ -18,6 +23,7 @@ const BeerList = ({ beers, onBeerClick, loadMoreBeers }) => (
       {beers && beers.map(beer => (
         <BeerItem
           key={beer.id}
+          isFetching={isFetching}
           beer={beer}
           onClick={() => onBeerClick(beer.id)}
         />
@@ -32,4 +38,9 @@ BeerList.propTypes = {
   beers: PropTypes.arrayOf(BeerItemPropTypes).isRequired,
   onBeerClick: PropTypes.func.isRequired,
   loadMoreBeers: PropTypes.func.isRequired,
+  isFetching: PropTypes.bool,
+};
+
+BeerList.defaultProps = {
+  isFetching: false,
 };

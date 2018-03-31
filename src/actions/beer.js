@@ -56,6 +56,13 @@ export const fetchBeerByIdIfNeeded = id => (dispatch, getState) => {
   return Promise.resolve();
 };
 
+const handleErrors = (response) => {
+  if (!response.ok) {
+    throw Error(response.statusText);
+  }
+  return response;
+};
+
 export const fetchBeers = (currentPage = 1) => (dispatch) => {
   dispatch({
     type: FETCH_BEERS_REQUEST,
@@ -63,13 +70,8 @@ export const fetchBeers = (currentPage = 1) => (dispatch) => {
   });
 
   return fetch(`https://api.punkapi.com/v2/beers?&per_page=20&page=${currentPage}`)
-    .then(
-      response => response.json(),
-      (error) => {
-        dispatch({ type: FETCH_BEERS_FAILURE });
-        throw error;
-      },
-    )
+    .then(handleErrors)
+    .then(response => response.json())
     .then((json) => {
       const normalized = normalize(json, schema.arrayOfBeers);
       dispatch({
@@ -78,7 +80,7 @@ export const fetchBeers = (currentPage = 1) => (dispatch) => {
         response: normalized,
       });
     })
-    .catch(() => ({}));
+    .catch(error => (dispatch({ type: FETCH_BEERS_FAILURE, error })));
 };
 
 export const fetchSimilarBeers = (beerId, abvValue, ibuValue, ebcValue) => (dispatch) => {

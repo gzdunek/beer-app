@@ -7,8 +7,9 @@ import Modal from '../components/UI/Modal/Modal';
 
 import BeerDetails, { BeerDetailsPropTypes } from '../components/Beer/Details/BeerDetails';
 import { closeBeerDetails, openBeerDetails, fetchBeerAndSimilarBeers } from '../actions/beer';
-import { getSelectedId, getBeerById, getIsFetchingBeerById, getSimilarBeers } from '../reducers';
+import { getSelectedId, getBeerById, getIsFetchingBeerById, getSimilarBeers, getIsSimilarBeersFetching } from '../reducers';
 import { BeerItemPropTypes } from '../components/Beer/Item/BeerItem';
+import generateArrayWithIds from '../helpers/generateArrayWithIds';
 
 const mapStateToProps = (state) => {
   const selectedId = getSelectedId(state);
@@ -17,6 +18,7 @@ const mapStateToProps = (state) => {
     isFetching: getIsFetchingBeerById(state),
     beerDetails: getBeerById(state, selectedId),
     similarBeers: getSimilarBeers(state, selectedId),
+    isSimilarBeersFetching: getIsSimilarBeersFetching(state, selectedId),
   };
 };
 
@@ -61,13 +63,18 @@ class BeerDetailsContainer extends Component {
     history.push('/');
   };
 
+  fakeSimilarBeers = generateArrayWithIds(3);
+
   render() {
     const {
       selectedId,
       isFetching,
       beerDetails,
       similarBeers,
+      isSimilarBeersFetching,
     } = this.props;
+
+    const similarBeersToRender = isSimilarBeersFetching ? this.fakeSimilarBeers : similarBeers;
 
     return (
       <div>
@@ -78,7 +85,8 @@ class BeerDetailsContainer extends Component {
           {beerDetails && <BeerDetails
             isFetching={isFetching}
             beer={beerDetails}
-            similarBeers={similarBeers}
+            isSimilarBeersFetching={isSimilarBeersFetching}
+            similarBeers={similarBeersToRender}
             onSimilarBeerClick={this.handleSimilarBeerClick}
           />}
         </Modal>
@@ -100,6 +108,7 @@ BeerDetailsContainer.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   match: PropTypes.object.isRequired,
   similarBeers: PropTypes.arrayOf(BeerItemPropTypes),
+  isSimilarBeersFetching: PropTypes.bool,
 };
 
 BeerDetailsContainer.defaultProps = {
@@ -107,4 +116,5 @@ BeerDetailsContainer.defaultProps = {
   isFetching: false,
   beerDetails: {},
   similarBeers: [],
+  isSimilarBeersFetching: false,
 };

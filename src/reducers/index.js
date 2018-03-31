@@ -24,3 +24,6 @@ export const getSimilarBeers = (state, id) => fromBeerDetails
   .getSimilarBeersById(state.beerDetails, id)
   .ids
   .map(similarBeerId => fromById.getBeer(state.byId, similarBeerId));
+export const getIsSimilarBeersFetching = (state, id) => fromBeerDetails
+  .getSimilarBeersById(state.beerDetails, id)
+  .isFetching;

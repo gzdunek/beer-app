@@ -5868,6 +5868,10 @@ rc@^1.0.1, rc@^1.1.6, rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-content-loader@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/react-content-loader/-/react-content-loader-3.1.1.tgz#4121cdf1bbf58387bfd031fd4569d0617c0de69d"
+
 react-dev-utils@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-5.0.0.tgz#425ac7c9c40c2603bc4f7ab8836c1406e96bb473"
@@ -5931,6 +5935,10 @@ react-modal@^3.3.2:
     exenv "^1.2.0"
     prop-types "^15.5.10"
     warning "^3.0.0"
+
+react-progressive-image@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/react-progressive-image/-/react-progressive-image-0.3.0.tgz#dd28e299c474216f2d640def5d4bc5b09aea7457"
 
 react-redux@^5.0.7:
   version "5.0.7"

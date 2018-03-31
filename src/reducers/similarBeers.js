@@ -1,4 +1,4 @@
-import { FETCH_SIMILAR_BEERS_REQUEST, FETCH_SIMILAR_BEERS_SUCCESS } from '../actions/beer';
+import { FETCH_SIMILAR_BEERS_REQUEST, FETCH_SIMILAR_BEERS_SUCCESS } from '../actions/similarBeers';
 
 const similarBeers = (state = {}, action) => {
   switch (action.type) {

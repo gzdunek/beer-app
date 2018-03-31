@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import BeerList from '../components/Beer/List/BeerList';
-import { openBeerDetails, fetchBeers } from '../actions/beer';
+import { openBeerDetails } from '../actions/beer';
+import { fetchBeers } from '../actions/beers';
 import { BeerItemPropTypes } from '../components/Beer/Item/BeerItem';
 import { getBeers, getCurrentPage, getIsFetchingBeers } from '../reducers';
 import generateArrayWithIds from '../helpers/generateArrayWithIds';
@@ -17,7 +18,6 @@ const mapStateToProps = state => ({
 class BeersListContainer extends Component {
   componentDidMount() {
     const { dispatch } = this.props;
-    console.log(this.props.beers);
     dispatch(fetchBeers());
   }
 
@@ -37,7 +37,7 @@ class BeersListContainer extends Component {
   render() {
     const { beers, isFetching } = this.props;
 
-    const beersToRender = isFetching ? this.fakeBeers : beers;
+    const beersToRender = isFetching && !beers.length ? this.fakeBeers : beers;
 
     return (
       <div id="beers-list">

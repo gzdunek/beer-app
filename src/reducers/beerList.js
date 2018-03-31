@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { FETCH_BEERS_REQUEST, FETCH_BEERS_SUCCESS, FETCH_BEERS_FAILURE } from '../actions/beer';
+import { FETCH_BEERS_REQUEST, FETCH_BEERS_SUCCESS, FETCH_BEERS_FAILURE } from '../actions/beers';
 
 const ids = (state = [], action) => {
   switch (action.type) {

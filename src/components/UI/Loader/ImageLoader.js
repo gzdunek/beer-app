@@ -4,8 +4,8 @@ import ContentLoader from 'react-content-loader';
 const ImageLoader = () => (
   <ContentLoader
     height={400}
-    width={400}
-    speed={2}
+    width={300}
+    speed={3}
     primaryColor="#f3f3f3"
     secondaryColor="#ecebeb"
   >

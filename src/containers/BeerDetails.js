@@ -74,7 +74,8 @@ class BeerDetailsContainer extends Component {
       isSimilarBeersFetching,
     } = this.props;
 
-    const similarBeersToRender = isSimilarBeersFetching ? this.fakeSimilarBeers : similarBeers;
+    const similarBeersToRender = isSimilarBeersFetching && !similarBeers.length ?
+      this.fakeSimilarBeers : similarBeers;
 
     return (
       <div>

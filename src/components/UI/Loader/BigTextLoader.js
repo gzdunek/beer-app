@@ -5,7 +5,7 @@ const BigTextLoader = () => (
   <ContentLoader
     height={200}
     width={400}
-    speed={2}
+    speed={3}
     primaryColor="#f3f3f3"
     secondaryColor="#ecebeb"
   >

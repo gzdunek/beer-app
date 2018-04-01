@@ -1,16 +1,10 @@
 import { normalize } from 'normalizr';
 import * as schema from './schema';
+import handleErrors from '../helpers/handleErrors';
 
 export const FETCH_BEERS_REQUEST = 'FETCH_BEERS_REQUEST';
 export const FETCH_BEERS_SUCCESS = 'FETCH_BEERS_SUCCESS';
 export const FETCH_BEERS_FAILURE = 'FETCH_BEERS_FAILURE';
-
-const handleErrors = (response) => {
-  if (!response.ok) {
-    throw Error(response.statusText);
-  }
-  return response;
-};
 
 export const fetchBeers = (currentPage = 1) => (dispatch) => {
   dispatch({
@@ -29,5 +23,5 @@ export const fetchBeers = (currentPage = 1) => (dispatch) => {
         response: normalized,
       });
     })
-    .catch(error => (dispatch({ type: FETCH_BEERS_FAILURE, error })));
+    .catch(message => (dispatch({ type: FETCH_BEERS_FAILURE, message: message.toString() })));
 };

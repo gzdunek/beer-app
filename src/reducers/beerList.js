@@ -25,6 +25,18 @@ const isFetching = (state = false, action) => {
   }
 };
 
+const errorMessage = (state = null, action) => {
+  switch (action.type) {
+    case FETCH_BEERS_FAILURE:
+      return action.message;
+    case FETCH_BEERS_REQUEST:
+    case FETCH_BEERS_SUCCESS:
+      return null;
+    default:
+      return state;
+  }
+};
+
 const currentPage = (state = 1, action) => {
   switch (action.type) {
     case FETCH_BEERS_SUCCESS:
@@ -37,10 +49,12 @@ const currentPage = (state = 1, action) => {
 export default combineReducers({
   ids,
   isFetching,
+  errorMessage,
   currentPage,
 });
 
 export const getIds = state => state.ids;
 export const getIsFetching = state => state.isFetching;
+export const getErrorMessage = state => state.errorMessage;
 export const getCurrentPage = state => state.currentPage;
 

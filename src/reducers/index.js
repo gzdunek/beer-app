@@ -17,6 +17,7 @@ export const getBeers = state => fromBeerList
   .map(id => fromById.getBeer(state.byId, id));
 export const getBeerById = (state, id) => fromById.getBeer(state.byId, id);
 export const getIsFetchingBeers = state => fromBeerList.getIsFetching(state.beerList);
+export const getBeersErrorMessage = state => fromBeerList.getErrorMessage(state.beerList);
 export const getCurrentPage = state => fromBeerList.getCurrentPage(state.beerList);
 export const getSelectedId = state => fromBeerDetails.getSelectedId(state.beerDetails);
 export const getIsFetchingBeerById = state => fromBeerDetails.getIsFetching(state.beerDetails);

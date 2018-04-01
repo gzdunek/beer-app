@@ -2,6 +2,7 @@ import { normalize } from 'normalizr';
 import * as schema from './schema';
 import { getBeerById } from '../reducers';
 import { fetchSimilarBeers, shouldFetchSimilarBeers } from './similarBeers';
+import handleErrors from '../helpers/handleErrors';
 
 export const FETCH_BEER_BY_ID_REQUEST = 'FETCH_BEER_BY_ID_REQUEST';
 export const FETCH_BEER_BY_ID_SUCCESS = 'FETCH_BEER_BY_ID_SUCCESS';
@@ -25,6 +26,7 @@ const fetchBeerById = id => (dispatch) => {
   });
 
   return fetch(`https://api.punkapi.com/v2/beers/${id}`)
+    .then(handleErrors)
     .then(response => response.json())
     .then(response => response[0])
     .then((json) => {
@@ -33,7 +35,8 @@ const fetchBeerById = id => (dispatch) => {
         type: FETCH_BEER_BY_ID_SUCCESS,
         response: normalized,
       });
-    });
+    })
+    .catch(message => (dispatch({ type: FETCH_BEER_BY_ID_FAILURE, message: message.toString() })));
 };
 
 const shouldFetchBeerById = (state, beerId) => {

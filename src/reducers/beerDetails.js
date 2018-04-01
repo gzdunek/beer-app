@@ -28,12 +28,26 @@ export const isFetching = (state = false, action) => {
   }
 };
 
+const errorMessage = (state = null, action) => {
+  switch (action.type) {
+    case FETCH_BEER_BY_ID_FAILURE:
+      return action.message;
+    case FETCH_BEER_BY_ID_REQUEST:
+    case FETCH_BEER_BY_ID_SUCCESS:
+      return null;
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   selectedId,
   isFetching,
   similarBeers,
+  errorMessage,
 });
 
 export const getSelectedId = state => state.selectedId;
 export const getIsFetching = state => state.isFetching;
+export const getErrorMessage = state => state.errorMessage;
 export const getSimilarBeersById = (state, id) => state.similarBeers[id] || { ids: [] };

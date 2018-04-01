@@ -1,4 +1,4 @@
-import { FETCH_SIMILAR_BEERS_REQUEST, FETCH_SIMILAR_BEERS_SUCCESS } from '../actions/similarBeers';
+import { FETCH_SIMILAR_BEERS_REQUEST, FETCH_SIMILAR_BEERS_SUCCESS, FETCH_SIMILAR_BEERS_FAILURE } from '../actions/similarBeers';
 
 const similarBeers = (state = {}, action) => {
   switch (action.type) {
@@ -18,6 +18,16 @@ const similarBeers = (state = {}, action) => {
           ...state[action.beerId],
           ids: action.response.result,
           isFetching: false,
+          errorMessage: null,
+        },
+      };
+    case FETCH_SIMILAR_BEERS_FAILURE:
+      return {
+        ...state,
+        [action.beerId]: {
+          ...state[action.beerId],
+          isFetching: false,
+          errorMessage: action.message,
         },
       };
     default:

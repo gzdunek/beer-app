@@ -4,16 +4,13 @@ import ProgressiveImage from 'react-progressive-image';
 
 import './BeerDetails.scss';
 import Badge from '../../UI/Badge/Badge';
-import BeerSmallItem, { BeerSmallItemPropTypes } from '../SmallItem/BeerSmallItem';
 import ImageLoader from '../../UI/Loader/ImageLoader';
 import BigTextLoader from '../../UI/Loader/BigTextLoader';
 
 const BeerDetails = ({
   beer,
   isFetching,
-  similarBeers,
-  onSimilarBeerClick,
-  isSimilarBeersFetching,
+  children,
 }) => (
   <div className="beer-details">
     <div className="beer-details__image-column">
@@ -38,13 +35,7 @@ const BeerDetails = ({
     <div className="beer-details__similar-beers-container">
       <div className="beer-details__similar-beers-title">SIMILAR BEERS</div>
       <div className="beer-details__similar-beers">
-        {similarBeers.map(similarBeer => (
-          <BeerSmallItem
-            key={similarBeer.id}
-            beer={similarBeer}
-            isFetching={isSimilarBeersFetching}
-            onClick={() => onSimilarBeerClick(similarBeer.id)}
-          />))}
+        {children}
       </div>
     </div>
   </div>
@@ -66,14 +57,11 @@ BeerDetails.propTypes = {
   // eslint-disable-next-line react/no-typos
   beer: BeerDetailsPropTypes,
   isFetching: PropTypes.bool,
-  similarBeers: PropTypes.arrayOf(BeerSmallItemPropTypes),
-  onSimilarBeerClick: PropTypes.func.isRequired,
-  isSimilarBeersFetching: PropTypes.bool,
+  children: PropTypes.element,
 };
 
 BeerDetails.defaultProps = {
   beer: {},
   isFetching: true,
-  similarBeers: [{}, {}],
-  isSimilarBeersFetching: false,
+  children: null,
 };

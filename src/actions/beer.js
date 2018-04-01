@@ -35,8 +35,7 @@ const fetchBeerById = id => (dispatch) => {
         type: FETCH_BEER_BY_ID_SUCCESS,
         response: normalized,
       });
-    })
-    .catch(message => (dispatch({ type: FETCH_BEER_BY_ID_FAILURE, message: message.toString() })));
+    });
 };
 
 const shouldFetchBeerById = (state, beerId) => {
@@ -56,9 +55,12 @@ export const fetchBeerByIdIfNeeded = id => (dispatch, getState) => {
 
 export const fetchBeerAndSimilarBeers = id => (dispatch, getState) => {
   if (shouldFetchSimilarBeers(getState(), id)) {
-    dispatch(fetchBeerByIdIfNeeded(id)).then(() => {
-      const fetchedBeer = getBeerById(getState(), id);
-      return dispatch(fetchSimilarBeers(id, fetchedBeer.abv, fetchedBeer.ibu, fetchedBeer.ebc));
-    });
+    dispatch(fetchBeerByIdIfNeeded(id))
+      .then(() => {
+        const fetchedBeer = getBeerById(getState(), id);
+        return dispatch(fetchSimilarBeers(id, fetchedBeer.abv, fetchedBeer.ibu, fetchedBeer.ebc));
+      })
+      .catch(message =>
+        (dispatch({ type: FETCH_BEER_BY_ID_FAILURE, message: message.toString() })));
   }
 };

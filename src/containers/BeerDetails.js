@@ -2,14 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-
 import Modal from '../components/UI/Modal/Modal';
-
 import BeerDetails, { BeerDetailsPropTypes } from '../components/Beer/Details/BeerDetails';
 import { closeBeerDetails, openBeerDetails, fetchBeerAndSimilarBeers } from '../actions/beer';
-import { getSelectedId, getBeerById, getIsFetchingBeerById, getSimilarBeers, getIsSimilarBeersFetching } from '../reducers';
-import { BeerItemPropTypes } from '../components/Beer/Item/BeerItem';
-import generateArrayWithIds from '../helpers/generateArrayWithIds';
+import { getSelectedId, getBeerById, getIsFetchingBeerById, getErrorMessageBeerById } from '../reducers';
+import SimilarBeers from './SimilarBeers';
+import FetchError from '../components/UI/FetchError/FetchError';
 
 const mapStateToProps = (state) => {
   const selectedId = getSelectedId(state);
@@ -17,8 +15,7 @@ const mapStateToProps = (state) => {
     selectedId,
     isFetching: getIsFetchingBeerById(state),
     beerDetails: getBeerById(state, selectedId),
-    similarBeers: getSimilarBeers(state, selectedId),
-    isSimilarBeersFetching: getIsSimilarBeersFetching(state, selectedId),
+    errorMessage: getErrorMessageBeerById(state),
   };
 };
 
@@ -27,14 +24,14 @@ class BeerDetailsContainer extends Component {
     const { selectedId, match } = this.props;
     const id = selectedId || this.getIdFromUrl(match);
     if (id) {
-      this.dispatchFetchBeersActions(id);
+      this.dispatchFetchBeerActions(id);
     }
   }
 
   componentWillReceiveProps(nextProps) {
     const idFromUrl = this.getIdFromUrl(nextProps.match);
     if (idFromUrl !== nextProps.selectedId) {
-      this.dispatchFetchBeersActions(idFromUrl);
+      this.dispatchFetchBeerActions(idFromUrl);
     }
   }
 
@@ -45,17 +42,11 @@ class BeerDetailsContainer extends Component {
     return null;
   }
 
-  dispatchFetchBeersActions = (id) => {
+  dispatchFetchBeerActions = (id) => {
     const { dispatch } = this.props;
     dispatch(openBeerDetails(id));
     dispatch(fetchBeerAndSimilarBeers(id));
   }
-
-
-  handleSimilarBeerClick = (id) => {
-    const { history } = this.props;
-    history.push(`/details/${id}`);
-  };
 
   handleRequestClose = () => {
     const { dispatch, history } = this.props;
@@ -63,19 +54,13 @@ class BeerDetailsContainer extends Component {
     history.push('/');
   };
 
-  fakeSimilarBeers = generateArrayWithIds(3);
-
   render() {
     const {
       selectedId,
       isFetching,
       beerDetails,
-      similarBeers,
-      isSimilarBeersFetching,
+      errorMessage,
     } = this.props;
-
-    const similarBeersToRender = isSimilarBeersFetching && !similarBeers.length ?
-      this.fakeSimilarBeers : similarBeers;
 
     return (
       <div>
@@ -83,13 +68,15 @@ class BeerDetailsContainer extends Component {
           isOpen={!!selectedId}
           onRequestClose={this.handleRequestClose}
         >
-          {beerDetails && <BeerDetails
-            isFetching={isFetching}
-            beer={beerDetails}
-            isSimilarBeersFetching={isSimilarBeersFetching}
-            similarBeers={similarBeersToRender}
-            onSimilarBeerClick={this.handleSimilarBeerClick}
-          />}
+          {errorMessage ?
+            <FetchError message={errorMessage} onRetry={this.dispatchFetchBeerActions} /> :
+            <BeerDetails
+              isFetching={isFetching}
+              beer={beerDetails}
+            >
+              <SimilarBeers />
+            </BeerDetails>
+          }
         </Modal>
       </div>
     );
@@ -108,14 +95,12 @@ BeerDetailsContainer.propTypes = {
   history: PropTypes.object.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   match: PropTypes.object.isRequired,
-  similarBeers: PropTypes.arrayOf(BeerItemPropTypes),
-  isSimilarBeersFetching: PropTypes.bool,
+  errorMessage: PropTypes.string,
 };
 
 BeerDetailsContainer.defaultProps = {
   selectedId: null,
   isFetching: false,
   beerDetails: {},
-  similarBeers: [],
-  isSimilarBeersFetching: false,
+  errorMessage: '',
 };

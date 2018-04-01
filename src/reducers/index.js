@@ -19,12 +19,18 @@ export const getBeerById = (state, id) => fromById.getBeer(state.byId, id);
 export const getIsFetchingBeers = state => fromBeerList.getIsFetching(state.beerList);
 export const getBeersErrorMessage = state => fromBeerList.getErrorMessage(state.beerList);
 export const getCurrentPage = state => fromBeerList.getCurrentPage(state.beerList);
+
 export const getSelectedId = state => fromBeerDetails.getSelectedId(state.beerDetails);
 export const getIsFetchingBeerById = state => fromBeerDetails.getIsFetching(state.beerDetails);
+export const getErrorMessageBeerById = state => fromBeerDetails.getErrorMessage(state.beerDetails);
+
 export const getSimilarBeers = (state, id) => fromBeerDetails
   .getSimilarBeersById(state.beerDetails, id)
   .ids
   .map(similarBeerId => fromById.getBeer(state.byId, similarBeerId));
-export const getIsSimilarBeersFetching = (state, id) => fromBeerDetails
+export const getIsFetchingSimilarBeers = (state, id) => fromBeerDetails
   .getSimilarBeersById(state.beerDetails, id)
   .isFetching;
+export const getErrorMessageSimilarBeers = (state, id) => fromBeerDetails
+  .getSimilarBeersById(state.beerDetails, id)
+  .errorMessage;

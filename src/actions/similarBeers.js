@@ -30,13 +30,7 @@ export const fetchSimilarBeers = (beerId, abvValue, ibuValue, ebcValue) => (disp
     + `&ibu_gt=${Math.max(0, Math.ceil(ibuValue - ibuThreshold))}&ibu_lt=${Math.ceil(ibuValue + ibuThreshold)}`
     + `&ebc_gt=${Math.max(0, Math.ceil(ebcValue - ebcThreshold))}&ebc_lt=${Math.ceil(ebcValue + ebcThreshold)}`)
     .then(handleErrors)
-    .then(
-      response => response.json(),
-      (error) => {
-        dispatch({ type: FETCH_SIMILAR_BEERS_FAILURE, beerId, error });
-        throw error;
-      },
-    )
+    .then(response => response.json())
     .then(response => response.slice(1, 4))
     .then((json) => {
       const normalized = normalize(json, schema.arrayOfBeers);
@@ -47,5 +41,5 @@ export const fetchSimilarBeers = (beerId, abvValue, ibuValue, ebcValue) => (disp
       });
     })
     .catch(message =>
-      (dispatch({ type: FETCH_SIMILAR_BEERS_FAILURE, message: message.toString() })));
+      (dispatch({ type: FETCH_SIMILAR_BEERS_FAILURE, beerId, message: message.toString() })));
 };

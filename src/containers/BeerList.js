@@ -6,7 +6,7 @@ import BeerList from '../components/Beer/List/BeerList';
 import { openBeerDetails } from '../actions/beer';
 import { fetchBeers } from '../actions/beers';
 import { BeerItemPropTypes } from '../components/Beer/Item/BeerItem';
-import { getBeers, getCurrentPage, getIsFetchingBeers, getBeersErrorMessage } from '../reducers';
+import { getBeers, getCurrentPage, getIsFetchingBeers, getBeersErrorMessage, getIsNoMoreBeersToFetch } from '../reducers';
 import generateArrayWithIds from '../helpers/generateArrayWithIds';
 import FetchError from '../components/UI/FetchError/FetchError';
 
@@ -15,6 +15,7 @@ const mapStateToProps = state => ({
   beers: getBeers(state),
   currentPage: getCurrentPage(state),
   errorMessage: getBeersErrorMessage(state),
+  isNoMoreBeers: getIsNoMoreBeersToFetch(state),
 });
 
 class BeersListContainer extends Component {
@@ -41,7 +42,12 @@ class BeersListContainer extends Component {
   fakeBeers = generateArrayWithIds(20);
 
   render() {
-    const { beers, isFetching, errorMessage } = this.props;
+    const {
+      beers,
+      isFetching,
+      errorMessage,
+      isNoMoreBeers,
+    } = this.props;
 
     const beersToRender = isFetching && !beers.length ? this.fakeBeers : beers;
 
@@ -53,6 +59,7 @@ class BeersListContainer extends Component {
           <BeerList
             beers={beersToRender}
             isFetching={isFetching}
+            isNoMoreBeers={isNoMoreBeers}
             loadMoreBeers={this.handleLoadMoreBeers}
             onBeerClick={this.handleBeerClick}
           />
@@ -72,9 +79,11 @@ BeersListContainer.propTypes = {
   errorMessage: PropTypes.string,
   // eslint-disable-next-line react/forbid-prop-types
   history: PropTypes.object.isRequired,
+  isNoMoreBeers: PropTypes.bool,
 };
 
 BeersListContainer.defaultProps = {
   beers: [],
   errorMessage: null,
+  isNoMoreBeers: false,
 };

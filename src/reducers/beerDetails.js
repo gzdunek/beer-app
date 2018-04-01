@@ -3,7 +3,6 @@ import {
   OPEN_BEER_DETAILS, CLOSE_BEER_DETAILS, FETCH_BEER_BY_ID_REQUEST,
   FETCH_BEER_BY_ID_SUCCESS, FETCH_BEER_BY_ID_FAILURE,
 } from '../actions/beer';
-import similarBeers from './similarBeers';
 
 export const selectedId = (state = null, action) => {
   switch (action.type) {
@@ -43,11 +42,9 @@ const errorMessage = (state = null, action) => {
 export default combineReducers({
   selectedId,
   isFetching,
-  similarBeers,
   errorMessage,
 });
 
 export const getSelectedId = state => state.selectedId;
 export const getIsFetching = state => state.isFetching;
 export const getErrorMessage = state => state.errorMessage;
-export const getSimilarBeersById = (state, id) => state.similarBeers[id] || { ids: [] };

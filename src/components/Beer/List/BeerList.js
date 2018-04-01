@@ -10,11 +10,12 @@ const BeerList = ({
   onBeerClick,
   loadMoreBeers,
   isFetching,
+  isNoMoreBeers,
 }) => (
   <InfiniteScroll
     style={{ overflow: 'visible' }}
     next={loadMoreBeers}
-    hasMore={!!beers.length} // TODO
+    hasMore={!isNoMoreBeers}
     scrollThreshold={0.7}
     dataLength={beers.length}
     loader={<div className="loader" key={0}>Loading ...</div>}
@@ -39,8 +40,10 @@ BeerList.propTypes = {
   onBeerClick: PropTypes.func.isRequired,
   loadMoreBeers: PropTypes.func.isRequired,
   isFetching: PropTypes.bool,
+  isNoMoreBeers: PropTypes.bool,
 };
 
 BeerList.defaultProps = {
   isFetching: false,
+  isNoMoreBeers: false,
 };

@@ -31,6 +31,6 @@ Modal.propTypes = {
 
 Modal.defaultProps = {
   isOpen: false,
-  onRequestClose: () => { },
+  onRequestClose: () => {},
   children: null,
 };

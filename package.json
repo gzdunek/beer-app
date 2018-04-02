@@ -16,6 +16,8 @@
     "css-loader": "0.28.7",
     "dotenv": "4.0.0",
     "dotenv-expand": "4.2.0",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "eslint": "4.10.0",
     "eslint-config-react-app": "^2.1.0",
     "eslint-loader": "1.9.0",
@@ -28,6 +30,7 @@
     "fs-extra": "3.0.1",
     "html-webpack-plugin": "2.29.0",
     "jest": "20.0.4",
+    "jest-fetch-mock": "^1.5.0",
     "node-sass": "^4.8.3",
     "normalizr": "^3.2.4",
     "object-assign": "4.1.1",
@@ -48,8 +51,10 @@
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "redux": "^3.7.2",
+    "redux-test-utils": "^0.2.2",
     "redux-thunk": "^2.2.0",
     "sass-loader": "^6.0.7",
+    "sinon": "^4.5.0",
     "style-loader": "0.19.0",
     "sw-precache-webpack-plugin": "0.11.4",
     "url-loader": "0.6.2",
@@ -68,11 +73,15 @@
     "eslint-config-airbnb": "16.1.0",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
-    "eslint-plugin-react": "^7.4.0"
+    "eslint-plugin-react": "^7.4.0",
+    "fetch-mock": "^6.3.0",
+    "redux-mock-store": "^1.5.1"
   },
   "jest": {
+    "automock": false,
     "collectCoverageFrom": [
-      "src/**/*.{js,jsx,mjs}"
+      "src/**/*.{js,jsx,mjs}",
+      "./setupJest.js"
     ],
     "setupFiles": [
       "<rootDir>/config/polyfills.js"
@@ -102,7 +111,8 @@
       "web.jsx",
       "jsx",
       "node"
-    ]
+    ],
+    "setupTestFrameworkScriptFile": "<rootDir>/src/setupTests.js"
   },
   "babel": {
     "presets": [

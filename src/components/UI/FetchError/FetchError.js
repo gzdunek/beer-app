@@ -15,9 +15,10 @@ export default Error;
 
 Error.propTypes = {
   message: PropTypes.string,
-  onRetry: PropTypes.func.isRequired,
+  onRetry: PropTypes.func,
 };
 
 Error.defaultProps = {
   message: '',
+  onRetry: () => {},
 };

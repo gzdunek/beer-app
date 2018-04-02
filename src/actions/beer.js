@@ -19,11 +19,23 @@ export const closeBeerDetails = () => ({
   type: CLOSE_BEER_DETAILS,
 });
 
-const fetchBeerById = id => (dispatch) => {
-  dispatch({
-    type: FETCH_BEER_BY_ID_REQUEST,
-    id,
-  });
+const fetchBeerByIdRequest = id => ({
+  type: FETCH_BEER_BY_ID_REQUEST,
+  id,
+});
+
+const fetchBeerByIdSuccess = response => ({
+  type: FETCH_BEER_BY_ID_SUCCESS,
+  response,
+});
+
+const fetchBeerByIdFailure = message => ({
+  type: FETCH_BEER_BY_ID_FAILURE,
+  message,
+});
+
+export const fetchBeerById = id => (dispatch) => {
+  dispatch(fetchBeerByIdRequest(id));
 
   return fetch(`https://api.punkapi.com/v2/beers/${id}`)
     .then(handleErrors)
@@ -31,10 +43,7 @@ const fetchBeerById = id => (dispatch) => {
     .then(response => response[0])
     .then((json) => {
       const normalized = normalize(json, schema.beer);
-      dispatch({
-        type: FETCH_BEER_BY_ID_SUCCESS,
-        response: normalized,
-      });
+      dispatch(fetchBeerByIdSuccess(normalized));
     });
 };
 
@@ -46,7 +55,7 @@ const shouldFetchBeerById = (state, beerId) => {
   return false;
 };
 
-export const fetchBeerByIdIfNeeded = id => (dispatch, getState) => {
+const fetchBeerByIdIfNeeded = id => (dispatch, getState) => {
   if (shouldFetchBeerById(getState(), id)) {
     return dispatch(fetchBeerById(id));
   }
@@ -61,6 +70,6 @@ export const fetchBeerAndSimilarBeers = id => (dispatch, getState) => {
         return dispatch(fetchSimilarBeers(id, fetchedBeer.abv, fetchedBeer.ibu, fetchedBeer.ebc));
       })
       .catch(message =>
-        (dispatch({ type: FETCH_BEER_BY_ID_FAILURE, message: message.toString() })));
+        (dispatch(fetchBeerByIdFailure(message.toString()))));
   }
 };

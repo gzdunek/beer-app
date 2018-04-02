@@ -7,6 +7,23 @@ export const FETCH_SIMILAR_BEERS_REQUEST = 'FETCH_SIMILAR_BEERS_REQUEST';
 export const FETCH_SIMILAR_BEERS_SUCCESS = 'FETCH_SIMILAR_BEERS_SUCCESS';
 export const FETCH_SIMILAR_BEERS_FAILURE = 'FETCH_SIMILAR_BEERS_FAILURE';
 
+const fetchSimilarBeersRequest = beerId => ({
+  type: FETCH_SIMILAR_BEERS_REQUEST,
+  beerId,
+});
+
+const fetchSimilarBeersSuccess = (beerId, response) => ({
+  type: FETCH_SIMILAR_BEERS_SUCCESS,
+  beerId,
+  response,
+});
+
+const fetchSimilarBeersFailure = (beerId, message) => ({
+  type: FETCH_SIMILAR_BEERS_FAILURE,
+  beerId,
+  message,
+});
+
 export const shouldFetchSimilarBeers = (state, beerId) => {
   const similarBeers = getSimilarBeers(state, beerId);
   if (similarBeers && similarBeers.length) {
@@ -16,10 +33,7 @@ export const shouldFetchSimilarBeers = (state, beerId) => {
 };
 
 export const fetchSimilarBeers = (beerId, abvValue, ibuValue, ebcValue) => (dispatch) => {
-  dispatch({
-    type: FETCH_SIMILAR_BEERS_REQUEST,
-    beerId,
-  });
+  dispatch(fetchSimilarBeersRequest(beerId));
 
   const abvThreshold = 1;
   const ibuThreshold = 10;
@@ -34,12 +48,7 @@ export const fetchSimilarBeers = (beerId, abvValue, ibuValue, ebcValue) => (disp
     .then(response => response.slice(1, 4))
     .then((json) => {
       const normalized = normalize(json, schema.arrayOfBeers);
-      dispatch({
-        type: FETCH_SIMILAR_BEERS_SUCCESS,
-        beerId,
-        response: normalized,
-      });
+      dispatch(fetchSimilarBeersSuccess(beerId, normalized));
     })
-    .catch(message =>
-      (dispatch({ type: FETCH_SIMILAR_BEERS_FAILURE, beerId, message: message.toString() })));
+    .catch(message => dispatch(fetchSimilarBeersFailure(beerId, message)));
 };

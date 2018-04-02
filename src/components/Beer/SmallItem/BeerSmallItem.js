@@ -7,15 +7,13 @@ import SmallTextLoader from '../../UI/Loader/SmallTextLoader';
 import './BeerSmallItem.scss';
 
 const BeerSmallItem = ({ beer, onClick, isFetching }) => (
-  <div className="beer-small-item">
-    <div onClick={onClick} onKeyPress={onClick} role="button" tabIndex="0" >
-      <ProgressiveImage src={beer.image_url}>
-        {(src, loading) => (loading ? <ImageLoader /> : <img className="beer-small-item__image" src={src} alt={beer.name} />)}
-      </ProgressiveImage>
-      {!isFetching ?
-        <p className="beer-small-item__name">{beer.name}</p>
-        : <SmallTextLoader />}
-    </div>
+  <div className="beer-small-item" onClick={onClick} onKeyPress={onClick} role="button" tabIndex="0" >
+    <ProgressiveImage src={beer.image_url}>
+      {(src, loading) => (loading ? <ImageLoader /> : <img className="beer-small-item__image" src={src} alt={beer.name} />)}
+    </ProgressiveImage>
+    {!isFetching ?
+      <p className="beer-small-item__name">{beer.name}</p>
+      : <SmallTextLoader />}
   </div>
 );
 
@@ -27,12 +25,13 @@ export const BeerSmallItemPropTypes = PropTypes.shape({
 });
 
 BeerSmallItem.propTypes = {
-  // eslint-disable-next-line react/no-typos
-  beer: BeerSmallItemPropTypes.isRequired,
-  onClick: PropTypes.func.isRequired,
+  beer: BeerSmallItemPropTypes,
+  onClick: PropTypes.func,
   isFetching: PropTypes.bool,
 };
 
 BeerSmallItem.defaultProps = {
+  beer: {},
+  onClick: () => {},
   isFetching: false,
 };

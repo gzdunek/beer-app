@@ -54,7 +54,6 @@ export const BeerDetailsPropTypes = PropTypes.shape({
 });
 
 BeerDetails.propTypes = {
-  // eslint-disable-next-line react/no-typos
   beer: BeerDetailsPropTypes,
   isFetching: PropTypes.bool,
   children: PropTypes.element,
@@ -62,6 +61,6 @@ BeerDetails.propTypes = {
 
 BeerDetails.defaultProps = {
   beer: {},
-  isFetching: true,
+  isFetching: false,
   children: null,
 };

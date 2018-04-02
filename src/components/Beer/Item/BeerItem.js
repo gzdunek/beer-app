@@ -31,13 +31,14 @@ export const BeerItemPropTypes = PropTypes.shape({
 });
 
 BeerItem.propTypes = {
-  // eslint-disable-next-line react/no-typos
-  beer: BeerItemPropTypes.isRequired,
-  onClick: PropTypes.func.isRequired,
+  beer: BeerItemPropTypes,
+  onClick: PropTypes.func,
   isFetching: PropTypes.bool,
 };
 
 BeerItem.defaultProps = {
+  beer: {},
+  onClick: () => { },
   isFetching: false,
 };
 

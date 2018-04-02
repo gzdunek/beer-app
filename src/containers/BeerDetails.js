@@ -19,7 +19,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-class BeerDetailsContainer extends Component {
+export class BeerDetailsContainer extends Component {
   componentDidMount() {
     const { selectedId, match } = this.props;
     const id = selectedId || this.getIdFromUrl(match);
@@ -92,9 +92,9 @@ BeerDetailsContainer.propTypes = {
   // eslint-disable-next-line react/no-typos
   beerDetails: BeerDetailsPropTypes,
   // eslint-disable-next-line react/forbid-prop-types
-  history: PropTypes.object.isRequired,
+  history: PropTypes.object,
   // eslint-disable-next-line react/forbid-prop-types
-  match: PropTypes.object.isRequired,
+  match: PropTypes.object,
   errorMessage: PropTypes.string,
 };
 
@@ -103,4 +103,6 @@ BeerDetailsContainer.defaultProps = {
   isFetching: false,
   beerDetails: {},
   errorMessage: '',
+  history: {},
+  match: {},
 };

@@ -36,14 +36,17 @@ const BeerList = ({
 export default BeerList;
 
 BeerList.propTypes = {
-  beers: PropTypes.arrayOf(BeerItemPropTypes).isRequired,
-  onBeerClick: PropTypes.func.isRequired,
-  loadMoreBeers: PropTypes.func.isRequired,
+  beers: PropTypes.arrayOf(BeerItemPropTypes),
+  onBeerClick: PropTypes.func,
+  loadMoreBeers: PropTypes.func,
   isFetching: PropTypes.bool,
   isNoMoreBeers: PropTypes.bool,
 };
 
 BeerList.defaultProps = {
+  beers: [],
+  onBeerClick: () => {},
+  loadMoreBeers: () => {},
   isFetching: false,
   isNoMoreBeers: false,
 };

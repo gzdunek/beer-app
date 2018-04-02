@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import BeerList from '../components/Beer/List/BeerList';
-import { openBeerDetails } from '../actions/beer';
 import { fetchBeers } from '../actions/beers';
 import { BeerItemPropTypes } from '../components/Beer/Item/BeerItem';
 import { getBeers, getCurrentPage, getIsFetchingBeers, getBeersErrorMessage, getIsNoMoreBeersToFetch } from '../reducers';
@@ -34,8 +33,7 @@ class BeersListContainer extends Component {
   };
 
   handleBeerClick = (id) => {
-    const { dispatch, history } = this.props;
-    dispatch(openBeerDetails(id));
+    const { history } = this.props;
     history.push(`/details/${id}`);
   };
 

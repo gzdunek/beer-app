@@ -51,7 +51,7 @@ describe('Test beers fetch action creator', () => {
       FETCH_BEERS_FAILURE,
     ];
 
-    fetch.mockReject(new Error('fake error message'));
+    fetch.mockRejectOnce(new Error('fake error message'));
 
     store.dispatch(fetchBeers())
       .then(() => {

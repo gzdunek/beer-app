@@ -40,5 +40,7 @@ export const fetchBeers = (currentPage = 1) => (dispatch) => {
         dispatch(fetchBeersNoMoreItems());
       }
     })
-    .catch(message => (dispatch(fetchBeersFailure(message.toString()))));
+    .catch((error) => {
+      dispatch(fetchBeersFailure(error.message.toString()));
+    });
 };

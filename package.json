@@ -30,6 +30,7 @@
     "fs-extra": "3.0.1",
     "html-webpack-plugin": "2.29.0",
     "jest": "20.0.4",
+    "jest-cli": "20.0.4",
     "jest-fetch-mock": "^1.5.0",
     "node-sass": "^4.8.3",
     "normalizr": "^3.2.4",
@@ -74,7 +75,6 @@
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.4.0",
-    "fetch-mock": "^6.3.0",
     "redux-mock-store": "^1.5.1"
   },
   "jest": {
@@ -112,7 +112,7 @@
       "jsx",
       "node"
     ],
-    "setupTestFrameworkScriptFile": "<rootDir>/src/setupTests.js"
+    "setupTestFrameworkScriptFile": "<rootDir>/src/setupJest.js"
   },
   "babel": {
     "presets": [

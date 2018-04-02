@@ -7,7 +7,7 @@ const Error = ({ message, onRetry }) => (
   <div className="error">
     <h3>Oops, someting went wrong</h3>
     <p>{message}</p>
-    <button onClick={onRetry}>Retry</button>
+    <button className="error__retry-button" onClick={onRetry}>Retry</button>
   </div>
 );
 

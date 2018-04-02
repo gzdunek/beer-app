@@ -69,7 +69,10 @@ export class BeerDetailsContainer extends Component {
           onRequestClose={this.handleRequestClose}
         >
           {errorMessage ?
-            <FetchError message={errorMessage} onRetry={this.dispatchFetchBeerActions} /> :
+            <FetchError
+              message={errorMessage}
+              onRetry={() => this.dispatchFetchBeerActions(selectedId)}
+            /> :
             <BeerDetails
               isFetching={isFetching}
               beer={beerDetails}

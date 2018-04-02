@@ -44,6 +44,9 @@ export const fetchBeerById = id => (dispatch) => {
     .then((json) => {
       const normalized = normalize(json, schema.beer);
       dispatch(fetchBeerByIdSuccess(normalized));
+    })
+    .catch((error) => {
+      dispatch(fetchBeerByIdFailure(error.message.toString()));
     });
 };
 
@@ -57,8 +60,10 @@ const shouldFetchBeerById = (state, beerId) => {
 
 const fetchBeerByIdIfNeeded = id => (dispatch, getState) => {
   if (shouldFetchBeerById(getState(), id)) {
-    return dispatch(fetchBeerById(id));
+    return dispatch(fetchBeerById(id))
+      .catch(() => Promise.reject());
   }
+  dispatch(fetchBeerByIdSuccess());
   return Promise.resolve();
 };
 
@@ -69,7 +74,6 @@ export const fetchBeerAndSimilarBeers = id => (dispatch, getState) => {
         const fetchedBeer = getBeerById(getState(), id);
         return dispatch(fetchSimilarBeers(id, fetchedBeer.abv, fetchedBeer.ibu, fetchedBeer.ebc));
       })
-      .catch(message =>
-        (dispatch(fetchBeerByIdFailure(message.toString()))));
+      .catch(() => {});
   }
 };

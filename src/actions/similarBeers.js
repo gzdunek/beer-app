@@ -36,8 +36,8 @@ export const fetchSimilarBeers = (beerId, abvValue, ibuValue, ebcValue) => (disp
   dispatch(fetchSimilarBeersRequest(beerId));
 
   const abvThreshold = 1;
-  const ibuThreshold = 10;
-  const ebcThreshold = 10;
+  const ibuThreshold = 20;
+  const ebcThreshold = 20;
 
   return fetch('https://api.punkapi.com/v2/beers?'
     + `abv_gt=${Math.max(0, Math.ceil(abvValue - abvThreshold))}&abv_lt=${Math.ceil(abvValue + abvThreshold)}`
@@ -45,10 +45,11 @@ export const fetchSimilarBeers = (beerId, abvValue, ibuValue, ebcValue) => (disp
     + `&ebc_gt=${Math.max(0, Math.ceil(ebcValue - ebcThreshold))}&ebc_lt=${Math.ceil(ebcValue + ebcThreshold)}`)
     .then(handleErrors)
     .then(response => response.json())
-    .then(response => response.slice(1, 4))
+    .then(response => response.filter(beer => beer.id !== beerId))
+    .then(response => response.slice(0, 3))
     .then((json) => {
       const normalized = normalize(json, schema.arrayOfBeers);
       dispatch(fetchSimilarBeersSuccess(beerId, normalized));
     })
-    .catch(message => dispatch(fetchSimilarBeersFailure(beerId, message)));
+    .catch(error => dispatch(fetchSimilarBeersFailure(beerId, error.message)));
 };

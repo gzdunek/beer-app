@@ -71,17 +71,18 @@ export default withRouter(connect(mapStateToProps)(BeersListContainer));
 
 BeersListContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  currentPage: PropTypes.number.isRequired,
+  currentPage: PropTypes.number,
   beers: PropTypes.arrayOf(BeerItemPropTypes),
-  isFetching: PropTypes.bool.isRequired,
+  isFetching: PropTypes.bool,
   errorMessage: PropTypes.string,
-  // eslint-disable-next-line react/forbid-prop-types
-  history: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   isNoMoreBeers: PropTypes.bool,
 };
 
 BeersListContainer.defaultProps = {
   beers: [],
+  currentPage: 1,
   errorMessage: null,
   isNoMoreBeers: false,
+  isFetching: false,
 };

@@ -24,11 +24,15 @@ const setup = (params) => {
   };
 
   const dispatch = jest.fn();
+  const history = {};
+  const match = {};
 
   configure({ adapter: new Adapter() });
   return shallow(<BeerDetailsContainer
     beerDetails={beerDetails}
     dispatch={dispatch}
+    history={history}
+    match={match}
     {...params}
   />);
 };

@@ -59,8 +59,7 @@ SimilarBeers.propTypes = {
   selectedId: PropTypes.number,
   similarBeers: PropTypes.arrayOf(BeerItemPropTypes),
   isFetching: PropTypes.bool,
-  // eslint-disable-next-line react/forbid-prop-types
-  history: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   errorMessage: PropTypes.string,
 };
 

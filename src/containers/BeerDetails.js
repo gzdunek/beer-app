@@ -92,12 +92,9 @@ BeerDetailsContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   selectedId: PropTypes.number,
   isFetching: PropTypes.bool,
-  // eslint-disable-next-line react/no-typos
   beerDetails: BeerDetailsPropTypes,
-  // eslint-disable-next-line react/forbid-prop-types
-  history: PropTypes.object,
-  // eslint-disable-next-line react/forbid-prop-types
-  match: PropTypes.object,
+  history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  match: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   errorMessage: PropTypes.string,
 };
 
@@ -106,6 +103,4 @@ BeerDetailsContainer.defaultProps = {
   isFetching: false,
   beerDetails: {},
   errorMessage: '',
-  history: {},
-  match: {},
 };

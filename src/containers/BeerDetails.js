@@ -40,13 +40,13 @@ export class BeerDetailsContainer extends Component {
       return +match.params.id;
     }
     return null;
-  }
+  };
 
   dispatchFetchBeerActions = (id) => {
     const { dispatch } = this.props;
     dispatch(openBeerDetails(id));
     dispatch(fetchBeerAndSimilarBeers(id));
-  }
+  };
 
   handleRequestClose = () => {
     const { dispatch, history } = this.props;

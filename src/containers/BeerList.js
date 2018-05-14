@@ -25,7 +25,7 @@ class BeersListContainer extends Component {
   fetchData = (page = 1) => {
     const { dispatch } = this.props;
     dispatch(fetchBeers(page));
-  }
+  };
 
   handleLoadMoreBeers = () => {
     const { currentPage } = this.props;

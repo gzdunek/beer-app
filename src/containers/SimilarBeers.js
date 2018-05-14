@@ -28,7 +28,7 @@ class SimilarBeers extends Component {
   fetchData = () => {
     const { dispatch, selectedId } = this.props;
     dispatch(fetchBeerAndSimilarBeers(selectedId));
-  }
+  };
 
   fakeSimilarBeers = generateArrayWithIds(3);
 
